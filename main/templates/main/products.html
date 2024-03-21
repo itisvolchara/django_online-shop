@@ -1,0 +1,28 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}
+    Категория {{ category }}
+{% endblock %}
+
+{% block body %}
+    <div class="features">
+        {% for product in products %}
+            <div class="product">
+                <p>{{ product.name }}</p>
+                <p>{{ product.price }}</p>
+                {% if product.id in user_product_ids %}
+                      <button id="{{ product.id }}_bask_btn" onclick="remove_from_cart('{{ product.id }}', '{{ product.name }}')">В корзине</button>
+                {% else %}
+                      <button id="{{ product.id }}_bask_btn" onclick="add_to_cart('{{ product.id }}', '{{ product.name }}')">В корзину</button>
+                {% endif %}
+                {% if product.id in user_product_likes %}
+                      <button id="{{ product.id }}_like_btn" onclick="remove_like('{{ product.id }}', '{{ product.name }}')">Убрать лайк</button>
+                {% else %}
+                      <button id="{{ product.id }}_like_btn" onclick="add_like('{{ product.id }}', '{{ product.name }}')">Лайк</button>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+    {% block order %}
+    {% endblock %}
+{% endblock %}

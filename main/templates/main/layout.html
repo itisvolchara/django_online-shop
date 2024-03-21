@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}{% endblock %}
+    </title>
+    <script src="http://code.jquery.com/jquery-3.2.1.js"></script>
+
+</head>
+<body>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
+    <nav>
+        <div class="burger-menu">
+            <div class="burger"></div>
+        </div>
+        <ul class="nav-links">
+            <li><a href="{% url 'main' %}">Главная</a></li>
+            <li><a href="{% url 'categories' %}">Категории</a></li>
+            <li><a href="{% url 'cart' %}">Корзина</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'profile' %}">{{ user.username }}</a></li>
+                <li><a href="{% url 'logout' %}">Выйти</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Войти</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% block body %}{% endblock %}
+    <script>
+        function add_to_cart(product_id, product_name) {
+            $.ajax({
+                url: "{% url 'add_to_cart' %}",
+                method: 'get',
+                dataType: 'html',
+                data: {'product_id': product_id, 'product_name': product_name}
+            }).done(function (data) {
+                data = JSON.parse(data)
+                if (data['status'] === 'success') {
+                    let button = document.getElementById(`${product_id}_bask_btn`)
+                button.textContent = 'В корзине'
+                button.onclick = function () { remove_from_cart(product_id, product_name) }
+                } else {
+                    alert(data['message'])
+                }
+
+            })
+        }
+
+        function remove_from_cart(product_id, product_name) {
+            $.ajax({
+                url: "{% url 'remove_from_cart' %}",
+                method: 'get',
+                dataType: 'html',
+                data: {'product_id': product_id, 'product_name': product_name}
+            }).done(function (data) {
+                data = JSON.parse(data)
+                if (data['status'] === 'success') {
+                    let button = document.getElementById(`${product_id}_bask_btn`)
+                    button.textContent = 'В корзину'
+                    button.onclick = function () {
+                        add_to_cart(product_id, product_name)
+                    }
+                } else {
+                    alert(data['message'])
+                }
+
+            })
+        }
+
+        function add_like(product_id, product_name) {
+            $.ajax({
+                url: "{% url 'add_like' %}",
+                method: 'get',
+                dataType: 'html',
+                data: {'product_id': product_id, 'product_name': product_name}
+            }).done(function (data) {
+                data = JSON.parse(data)
+                if (data['status'] === 'success') {
+                    let button = document.getElementById(`${product_id}_like_btn`)
+                    button.textContent = 'Убрать лайк'
+                    button.onclick = function () { remove_like(product_id, product_name) }
+                } else {
+                    alert(data['message'])
+                }
+
+            })
+        }
+
+        function remove_like(product_id, product_name) {
+            $.ajax({
+                url: "{% url 'remove_like' %}",
+                method: 'get',
+                dataType: 'html',
+                data: {'product_id': product_id, 'product_name': product_name}
+            }).done(function (data) {
+                data = JSON.parse(data)
+                if (data['status'] === 'success') {
+                    let button = document.getElementById(`${product_id}_like_btn`)
+                    button.textContent = 'Лайк'
+                    button.onclick = function () {
+                        add_like(product_id, product_name)
+                    }
+                } else {
+                    alert(data['message'])
+                }
+            })
+        }
+    </script>
+</body>
+</html>

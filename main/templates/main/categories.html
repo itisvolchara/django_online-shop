@@ -1,0 +1,17 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}
+    Категории
+{% endblock %}
+
+{% block body %}
+    <div class="features">
+        {% for category in categories %}
+            <a class="category" href="{% url 'category' category %}">
+                <div>
+                    <p>{{ category }}</p>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}

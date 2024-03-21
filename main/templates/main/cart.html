@@ -1,0 +1,15 @@
+{% extends 'main/products.html' %}
+
+{% block title %}
+    Корзина
+{% endblock %}
+
+{% block order %}
+    {% if total == 0 %}
+        <p>Пусто!</p>
+        <a href="{% url 'categories' %}">В магазин</a>
+    {% else %}
+        <p>Итоговая цена: {{ total }}</p>
+        <a href="{% url 'order' %}">Сделать заказ</a>
+    {% endif %}
+{% endblock %}

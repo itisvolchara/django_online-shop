@@ -1,0 +1,22 @@
+{% extends 'main/layout.html' %}
+
+{% block title %}
+    Профиль
+{% endblock %}
+
+{% block body %}
+    <h1>Здравствуйте, {{ user.username }}!</h1>
+    {% for order_id, order_values in orderitems.items %}
+        <div class="order">
+            <p>Заказ №{{ order_id }} от {{ order_values.date }}</p>
+            {% for product in order_values.products %}
+                <span class="product">
+                    {{ product.name }}
+                    {{ product.price }}
+                </span>
+            {% endfor %}
+            <p>Итоговая цена: {{ order_values.total }}</p>
+        </div>
+    {% endfor %}
+
+{% endblock %}

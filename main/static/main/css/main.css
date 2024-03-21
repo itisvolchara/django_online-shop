@@ -1,0 +1,81 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    padding: 0 1rem;
+}
+
+.hamburger-menu {
+    display: none;
+}
+
+.hamburger {
+    width: 30px;
+    height: 3px;
+    background-color: white;
+    margin: 5px;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li a {
+    color: white;
+    text-decoration: none;
+    padding: 1rem;
+}
+
+.features {
+    display: flex;
+}
+
+.auth-form {
+    margin: auto;
+    width: 50%;
+    background-color: red;
+    align-content: center;
+    text-align: center;
+}
+
+.category, .product {
+    text-decoration: none;
+    position: relative;
+    width: 200px;
+    height: fit-content;
+    border: 2px solid grey;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 5px;
+    text-align: center;
+}
+
+.order {
+    border: 3px solid purple;
+    border-radius: 10px;
+    margin: 5px;
+    padding: 5px;
+    width: fit-content;
+}
+
+
+
+/* Медиазапрос для мобильных устройств */
+@media (max-width: 768px) {
+    .hamburger-menu {
+        display: block;
+    }
+
+    .nav-links {
+        display: none;
+    }
+}
