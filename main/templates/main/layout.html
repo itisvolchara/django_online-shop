@@ -19,6 +19,7 @@
             <li><a href="{% url 'main' %}">Главная</a></li>
             <li><a href="{% url 'categories' %}">Категории</a></li>
             <li><a href="{% url 'cart' %}">Корзина</a></li>
+            <li><a href="{% url 'recently_watched' %}">Недавно просмотренные</a></li>
             {% if user.is_authenticated %}
                 <li><a href="{% url 'profile' %}">{{ user.username }}</a></li>
                 <li><a href="{% url 'logout' %}">Выйти</a></li>

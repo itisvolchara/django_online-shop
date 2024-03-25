@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 import pytz
+
 # Create your models here.
 class Product(models.Model):
 
@@ -67,6 +68,17 @@ class Like(models.Model):
         verbose_name_plural = 'Likes'
 
 
+class Watch(models.Model):
+    customer = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
+    date_time = models.DateTimeField('Дата просмотра', blank=True, null=True)
 
+    class Meta:
+        verbose_name = 'Watch'
+        verbose_name_plural = 'Watches'
 
+    def save(self, *args, **kwargs):
+        timezone.activate(pytz.timezone('Europe/Moscow'))
+        self.date_time = timezone.now()
+        return super(Watch, self).save(*args, **kwargs)

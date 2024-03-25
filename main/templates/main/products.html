@@ -5,10 +5,12 @@
 {% endblock %}
 
 {% block body %}
+    {% block h1 %}
+    {% endblock %}
     <div class="features">
         {% for product in products %}
             <div class="product">
-                <p>{{ product.name }}</p>
+                <a href="{% url 'product' product.id %}" class="product_link"><p>{{ product.name }}</p></a>
                 <p>{{ product.price }}</p>
                 {% if product.id in user_product_ids %}
                       <button id="{{ product.id }}_bask_btn" onclick="remove_from_cart('{{ product.id }}', '{{ product.name }}')">В корзине</button>
@@ -21,6 +23,7 @@
                       <button id="{{ product.id }}_like_btn" onclick="add_like('{{ product.id }}', '{{ product.name }}')">Лайк</button>
                 {% endif %}
             </div>
+
         {% endfor %}
     </div>
     {% block order %}
