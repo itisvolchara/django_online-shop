@@ -9,13 +9,15 @@ from django.urls import reverse_lazy
 from .models import Product, Order, OrderItem, ShoppingCart, Like, Watch
 from .forms import RegisterUserForm, LoginUserForm
 
-from django.views.decorators.cache import cache_page
+from .tasks import send_order_email, send_thankyou_email
+from datetime import timedelta
+from django.utils import timezone
 
 from django.core.cache import cache
 
 
 def data_in_cache(key):
-    return cache.get(key) != None
+    return cache.has_key(key)
 
 def cache_update(request, cache_list):
     for cache_name in cache_list:
@@ -25,23 +27,23 @@ def cache_update(request, cache_list):
             elif cache_name == 'user_product_ids':
                 cache.set(cache_name, [obj.product.id for obj in ShoppingCart.objects.filter(customer=request.user.id).select_related('product')])
             elif cache_name == 'user_likes':
-                cache.set(cache_name, Like.objects.filter(customer=request.user).select_related('product'))
+                cache.set(cache_name, Like.objects.filter(customer=request.user.id).select_related('product'))
             elif cache_name == 'user_product_likes':
                 cache.set(cache_name, [obj.product.id for obj in Like.objects.filter(customer=request.user.id).select_related('product')])
             elif cache_name == 'user_orders':
-                cache.set(cache_name, Order.objects.filter(customer=request.user))
+                cache.set(cache_name, Order.objects.filter(customer=request.user.id))
             elif cache_name == 'user_watches_ids':
                 cache.set(cache_name, set([obj.product.id for obj in Watch.objects.filter(customer=request.user.id).select_related('product')]))
             elif cache_name == 'order_items':
-                orderitems = OrderItem.objects.all().select_related('order', 'product')
-                cache.set(cache_name, [obj for obj in orderitems if obj.order.customer.id == request.user.id])
+                # orderitems = OrderItem.objects.all().select_related('order', 'product')
+                # cache.set(cache_name, [obj for obj in orderitems if obj.order.customer.id == request.user.id])
+                cache.set(cache_name, list(OrderItem.objects.filter(order__customer_id=request.user.id).select_related('order', 'product')))
             elif cache_name == 'shopping_cart':
-                cache.set(cache_name, ShoppingCart.objects.filter(customer=request.user).select_related('product'))
+                cache.set(cache_name, ShoppingCart.objects.filter(customer=request.user.id).select_related('product'))
 
 
 def index(request):
     data = {'user': request.user}
-    print(cache.keys('*'))
     return render(request, 'main/main.html', data)
 
 
@@ -97,8 +99,6 @@ class ProductView(DetailView):
     def get(self, request, *args, **kwargs):
         cache_update(request, ['user_product_ids', 'user_product_likes', 'user_watches_ids'])
 
-        print(self.extra_context)
-
         self.extra_context['user'] = request.user
         self.extra_context['user_product_ids'] = cache.get('user_product_ids')
         self.extra_context['user_product_likes'] = cache.get('user_product_likes')
@@ -145,7 +145,7 @@ def profile(request):
     cache_update(request, ['order_items'])
 
     orderitems = cache.get('order_items')
-    print(orderitems)
+
 
     jsondata = {}
     for obj in orderitems:
@@ -177,8 +177,6 @@ def cart(request):
     products_to_buy = [obj.product for obj in cache.get('shopping_cart')]
 
     user_product_ids = cache.get('user_product_ids')
-
-    print(cache.get('user_product_likes'))
     user_product_likes = [id for id in cache.get('user_product_likes')]
 
     total_price = sum([product.price for product in products_to_buy])
@@ -200,6 +198,8 @@ def order(request):
 
     shopping_cart = cache.get('shopping_cart')
     order_sum = sum([obj.product.price for obj in shopping_cart])
+
+
 
     new_order = Order(customer=request.user, total_price=order_sum)
     new_order.save()
@@ -223,8 +223,10 @@ def order(request):
 
     # удаление списка покупок из кэша
     cache.delete('shopping_cart')
+    cache.delete('user_product_ids')
 
-    print(new_order.id)
+    send_order_email.delay(request.user.id, [obj.product.name for obj in shopping_cart], order_sum, new_order.id)
+    send_thankyou_email.apply_async(args=[request.user.id], eta=timezone.now() + timedelta(minutes=5))
 
     return redirect('profile')
 
@@ -286,7 +288,6 @@ def remove_from_cart(request):
     new_cache_ids.remove(product_id)
     cache.set('user_product_ids', new_cache_ids)
 
-    print(product_id)
 
     response = {
         'status': 'success',
@@ -322,7 +323,6 @@ def add_like(request):
     new_cache_likes.append(product_id)
     cache.set('user_product_likes', new_cache_likes)
 
-    print(product_id)
     response = {
         'status': 'success',
         'message': 'Лайк поставлен'
@@ -352,8 +352,6 @@ def remove_like(request):
     new_cache_likes = cache.get('user_product_likes')
     new_cache_likes.remove(product_id)
     cache.set('user_product_likes', new_cache_likes)
-
-    print(product_id)
 
     response = {
         'status': 'success',
