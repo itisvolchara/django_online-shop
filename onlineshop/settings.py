@@ -183,7 +183,7 @@ EMAIL_USE_TLS = True
 #add the port number of the email server
 EMAIL_PORT = 587
 #add your gamil here
-EMAIL_HOST_USER =
+EMAIL_HOST_USER = 'volcharaodnonogy@gmail.com'
 #add your password here
-EMAIL_HOST_PASSWORD =
+EMAIL_HOST_PASSWORD = 'gtmqvfidbeviogmz'
 DEFAULT_FROM_EMAIL='Celery <naincygupta100@gmail.com>'

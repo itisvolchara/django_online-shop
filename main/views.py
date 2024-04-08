@@ -199,8 +199,6 @@ def order(request):
     shopping_cart = cache.get('shopping_cart')
     order_sum = sum([obj.product.price for obj in shopping_cart])
 
-
-
     new_order = Order(customer=request.user, total_price=order_sum)
     new_order.save()
 
@@ -246,7 +244,7 @@ def add_to_cart(request):
         response['message'] = 'Продукт уже в корзине'
         return JsonResponse(response)
 
-    new_record = ShoppingCart(customer=request.user, product=cache.get('products').get(id=product_id))
+    new_record = ShoppingCart(customer=request.user, product=Product.objects.get(id=product_id))
     new_record.save()
 
     # пока не оптимизирую
@@ -280,7 +278,7 @@ def remove_from_cart(request):
         return JsonResponse(response)
 
     # Пока никак не оптимизировать
-    ShoppingCart.objects.filter(customer=request.user, product=cache.get('products').get(id=product_id)).delete()
+    ShoppingCart.objects.filter(customer=request.user, product=product_id).delete()
     cache.set('shopping_cart', ShoppingCart.objects.filter(customer=request.user).select_related('product'))
 
     # кэширование нового списка айди купленных товаров
@@ -312,7 +310,7 @@ def add_like(request):
         response['message'] = 'Лайк уже поставлен'
         return JsonResponse(response)
 
-    new_record = Like(customer=request.user, product=Product.objects.filter(id=product_id).first())
+    new_record = Like(customer=request.user, product=Product.objects.get(id=product_id))
     new_record.save()
 
     # пока не оптимизирую
@@ -345,7 +343,7 @@ def remove_like(request):
         response['message'] = 'Лайк удалить не удалось'
         return JsonResponse(response)
 
-    Like.objects.filter(customer=request.user, product=Product.objects.get(id=product_id)).delete()
+    Like.objects.filter(customer=request.user, product=product_id).delete()
     cache.set('user_likes', Like.objects.filter(customer=request.user).select_related('product'))
 
     # кэширование нового списка айди лайков
