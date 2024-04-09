@@ -185,5 +185,5 @@ EMAIL_PORT = 587
 #add your gamil here
 EMAIL_HOST_USER = 'volcharaodnonogy@gmail.com'
 #add your password here
-EMAIL_HOST_PASSWORD = 'gtmqvfidbeviogmz'
+EMAIL_HOST_PASSWORD = ''
 DEFAULT_FROM_EMAIL='Celery <naincygupta100@gmail.com>'
