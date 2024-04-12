@@ -1,8 +1,10 @@
 from django.core.cache import cache
+
 from .commands import *
+from .specialclasses import Singleton
 
 
-class Cache:
+class Cache(Singleton):
 
     COMMANDS = {
         'products': ProductCommand,

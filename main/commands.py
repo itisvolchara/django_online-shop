@@ -1,9 +1,10 @@
 from abc import ABC, abstractmethod
 
-from main.models import *
+from .models import *
+from .specialclasses import Singleton
 
 
-class BaseCommand(ABC):
+class BaseCommand(ABC, Singleton):
 
     @staticmethod
     @abstractmethod

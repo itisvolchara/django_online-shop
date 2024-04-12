@@ -1,7 +1,7 @@
 from django.utils import timezone
 
 from datetime import timedelta
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 
 from .cache import Cache
 from .models import *
