@@ -3,9 +3,9 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 import pytz
 
-# Create your models here.
-class Product(models.Model):
 
+# Create your models here.
+class ProductModel(models.Model):
     CATEGORIES = [
         ('FR', 'мебель'),
         ('TECH', 'техника'),
@@ -26,16 +26,16 @@ class Product(models.Model):
         verbose_name_plural = 'Products'
 
 
-class ShoppingCart(models.Model):
+class ShoppingCartModel(models.Model):
     customer = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(ProductModel, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Shopping_cart'
         verbose_name_plural = 'Shopping_carts'
 
 
-class Order(models.Model):
+class OrderModel(models.Model):
     customer = models.ForeignKey(User, on_delete=models.CASCADE)
     total_price = models.FloatField('Стоимость заказа')
     date_time = models.DateTimeField('Дата покупки', blank=True)
@@ -47,30 +47,30 @@ class Order(models.Model):
     def save(self, *args, **kwargs):
         timezone.activate(pytz.timezone('Europe/Moscow'))
         self.date_time = timezone.now()
-        return super(Order, self).save(*args, **kwargs)
+        return super(OrderModel, self).save(*args, **kwargs)
 
 
-class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+class OrderItemModel(models.Model):
+    order = models.ForeignKey(OrderModel, on_delete=models.CASCADE)
+    product = models.ForeignKey(ProductModel, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'OrderItem'
         verbose_name_plural = 'OrderItems'
 
 
-class Like(models.Model):
+class LikeModel(models.Model):
     customer = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(ProductModel, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Like'
         verbose_name_plural = 'Likes'
 
 
-class Watch(models.Model):
+class WatchModel(models.Model):
     customer = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(ProductModel, on_delete=models.CASCADE)
 
     date_time = models.DateTimeField('Дата просмотра', blank=True, null=True)
 
@@ -81,4 +81,4 @@ class Watch(models.Model):
     def save(self, *args, **kwargs):
         timezone.activate(pytz.timezone('Europe/Moscow'))
         self.date_time = timezone.now()
-        return super(Watch, self).save(*args, **kwargs)
+        return super(WatchModel, self).save(*args, **kwargs)

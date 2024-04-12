@@ -1,12 +1,12 @@
 from django.contrib import admin
-from .models import Product, ShoppingCart, OrderItem, Order, Like, Watch
+from .models import ProductModel, ShoppingCartModel, OrderItemModel, OrderModel, LikeModel, WatchModel
 
-admin.site.register(Product)
-admin.site.register(ShoppingCart)
-admin.site.register(Order)
-admin.site.register(OrderItem)
-admin.site.register(Like)
-admin.site.register(Watch)
+admin.site.register(ProductModel)
+admin.site.register(ShoppingCartModel)
+admin.site.register(OrderModel)
+admin.site.register(OrderItemModel)
+admin.site.register(LikeModel)
+admin.site.register(WatchModel)
 
 
 # Register your models here.
