@@ -5,9 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="36e4f82f-76aa-4a22-a240-3ccd1ec966e2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/main/cache.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/cache.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main/commands.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/commands.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/services.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/services.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/onlineshop/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/onlineshop/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,15 +36,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.Debug.executor": "Debug",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "redis__plus__celery",
-    "last_opened_file_path": "C:/Users/Vladislav/PycharmProjects/WeatherAPI"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.Debug.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;redis__plus__celery&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Vladislav/PycharmProjects/WeatherAPI&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>

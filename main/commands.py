@@ -4,7 +4,7 @@ from .models import *
 from .specialclasses import Singleton
 
 
-class BaseCommand(ABC, Singleton):
+class BaseCommand(Singleton):
 
     @staticmethod
     @abstractmethod
