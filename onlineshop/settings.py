@@ -94,7 +94,7 @@ DATABASES = {
         'NAME': os.environ.get('POSTGRES_NAME', 'django_online_shop'),
         'USER': os.environ.get('POSTGRES_USER', 'postgres'),
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD', ''),
-        'HOST': os.environ.get('POSTGRES_PASSWORD', 'localhost'),
+        'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
         'PORT': '5432'
     }
 }
@@ -117,11 +117,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
+        "LOCATION": f"redis://{os.environ.get('REDIS_HOST', '127.0.0.1')}:{os.environ.get('REDIS_PORT', '6379')}/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
